@@ -33,46 +33,22 @@ import {
 import './styles.css';
 
 const capabilities = [
-  {
-    title: 'Product Engineering',
-    copy: 'Web apps, portals, APIs, and internal tools.',
-    icon: Code2,
-  },
-  {
-    title: 'AI & Automation',
-    copy: 'RAG, agents, copilots, and workflow automation.',
-    icon: BrainCircuit,
-  },
-  {
-    title: 'Data & Integrations',
-    copy: 'Data modeling, pipelines, and system integrations.',
-    icon: Database,
-  },
-  {
-    title: 'Cloud & DevOps',
-    copy: 'Infra, CI/CD, observability, and cost optimization.',
-    icon: Cloud,
-  },
-  {
-    title: 'Quality & Security',
-    copy: 'Automated testing, SAST, and compliance.',
-    icon: Shield,
-  },
-  {
-    title: 'Scale & Support',
-    copy: 'Launch support and continuous improvement.',
-    icon: Headphones,
-  },
+  ['Product Engineering', 'Web apps, portals, APIs, and internal tools.', Code2],
+  ['AI & Automation', 'RAG, agents, copilots, and workflow automation.', BrainCircuit],
+  ['Data & Integrations', 'Data modeling, pipelines, and system integrations.', Database],
+  ['Cloud & DevOps', 'Infra, CI/CD, observability, and cost optimization.', Cloud],
+  ['Quality & Security', 'Automated testing, SAST, and compliance.', Shield],
+  ['Scale & Support', 'Launch support and continuous improvement.', Headphones],
 ];
 
 const proof = [
-  { icon: Users, title: 'Collaborative by design', copy: 'Transparent communication, shared docs, and weekly demos.' },
-  { icon: Target, title: 'Outcomes over output', copy: 'We align on outcomes, not just features and tickets.' },
-  { icon: BarChart3, title: 'Built for scale', copy: 'Architecture that grows with your users and your data.' },
-  { icon: Sparkles, title: 'Long-term partner', copy: 'We support, iterate, and ship the next version with you.' },
+  ['Collaborative by design', 'Transparent communication, shared docs, and weekly demos.', Users],
+  ['Outcomes over output', 'We align on outcomes, not just features and tickets.', Target],
+  ['Built for scale', 'Architecture that grows with your users and your data.', BarChart3],
+  ['Long-term partner', 'We support, iterate, and ship the next version with you.', Sparkles],
 ];
 
-const cases = [
+const caseStudies = [
   {
     eyebrow: 'OPERATIONS PORTAL',
     title: 'Field Operations Platform',
@@ -94,10 +70,10 @@ const cases = [
 ];
 
 const pipeline = [
-  { label: 'Code Commit', sub: 'main', icon: GitBranch, state: 'done' },
-  { label: 'Build', sub: 'Passing', icon: Shield, state: 'done' },
-  { label: 'Tests', sub: 'All good', icon: AlertTriangle, state: 'done' },
-  { label: 'Deploy', sub: 'Staging', icon: CircleDot, state: 'active' },
+  ['Code Commit', 'main', GitBranch, 'done'],
+  ['Build', 'Passing', Shield, 'done'],
+  ['Tests', 'All good', AlertTriangle, 'done'],
+  ['Deploy', 'Staging', CircleDot, 'active'],
 ];
 
 function NavDropdown({ label, items }) {
@@ -126,7 +102,7 @@ function SystemNode({ icon: Icon, title, sub, active }) {
   return (
     <div className={active ? 'system-node active' : 'system-node'}>
       <span className="node-icon">
-        <Icon size={18} />
+        <Icon size={18} strokeWidth={1.9} />
       </span>
       <span>
         <strong>{title}</strong>
@@ -161,10 +137,12 @@ function SystemBlueprint() {
             <small>Kong</small>
             <div className="mini-bars" aria-hidden="true">
               {Array.from({ length: 9 }).map((_, index) => (
-                <i key={index} style={{ height: `${18 + ((index * 13) % 38)}%` }} />
+                <i key={index} style={{ height: `${22 + ((index * 17) % 42)}%` }} />
               ))}
             </div>
-            <strong>1.2k <em>req/s</em></strong>
+            <strong>
+              1.2k <em>req/s</em>
+            </strong>
           </div>
           <div className="connector-lines right-lines" />
           <div className="node-stack services">
@@ -186,9 +164,9 @@ function SystemBlueprint() {
       <div className="deploy-card">
         <div className="panel-title small">Deploy Pipeline</div>
         <div className="pipeline-list">
-          {pipeline.map(({ icon: Icon, label, sub, state }) => (
+          {pipeline.map(([label, sub, Icon, state]) => (
             <button className={`pipeline-step ${state}`} key={label} type="button">
-              <Icon size={16} />
+              <Icon size={16} strokeWidth={2} />
               <span>
                 <strong>{label}</strong>
                 <small>{sub}</small>
@@ -244,7 +222,9 @@ function SystemBlueprint() {
             <em>{tag}</em>
           </div>
         ))}
-        <a href="#activity">View all activity <ArrowRight size={13} /></a>
+        <a href="#activity">
+          View all activity <ArrowRight size={13} />
+        </a>
       </div>
     </div>
   );
@@ -252,30 +232,29 @@ function SystemBlueprint() {
 
 function CaseStudy() {
   const [active, setActive] = useState(0);
-  const item = cases[active];
-
-  const next = () => setActive((value) => (value + 1) % cases.length);
-  const previous = () => setActive((value) => (value + cases.length - 1) % cases.length);
+  const item = caseStudies[active];
 
   return (
     <section className="case-section" id="case-work">
       <div className="case-copy">
         <p className="section-kicker">Case Studies</p>
         <h2>Real systems. your project impact.</h2>
-        <a href="#case-work" className="inline-link">View all case work <ArrowRight size={14} /></a>
+        <a href="#case-work" className="inline-link">
+          View all case work <ArrowRight size={14} />
+        </a>
       </div>
       <div className="case-controls">
-        <button aria-label="Previous case study" onClick={previous} type="button">
+        <button aria-label="Previous case study" onClick={() => setActive((value) => (value + 2) % 3)} type="button">
           <ChevronLeft size={20} />
         </button>
-        <button aria-label="Next case study" onClick={next} type="button">
+        <button aria-label="Next case study" onClick={() => setActive((value) => (value + 1) % 3)} type="button">
           <ChevronRight size={20} />
         </button>
       </div>
       <article className="case-card">
         <div className="case-visual">
           <span>{item.eyebrow}</span>
-          <div className="dashboard-preview">
+          <div className="dashboard-preview" aria-hidden="true">
             <i />
             <i />
             <i />
@@ -357,11 +336,7 @@ function Portal() {
     <div className={dark ? 'app-shell' : 'app-shell light-mode'}>
       <header className="site-header">
         <a className="brand" href="#top" aria-label="Co-bounce home">
-          <img src="/logos/co-bounce-logo-icon.svg" alt="" />
-          <span>
-            <strong>co<span>-</span>bounce</strong>
-            <small>Software Engineering Firm</small>
-          </span>
+          <img src="/logos/co-bounce-logo-dark-transparent.svg" alt="Co-bounce" />
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
           <NavDropdown label="Services" items={['Product Engineering', 'AI Automation', 'Cloud DevOps']} />
@@ -384,7 +359,9 @@ function Portal() {
       <main id="top">
         <section className="hero-section">
           <div className="hero-copy">
-            <p className="lab-pill"><CircleDot size={11} /> Systems Lab</p>
+            <p className="lab-pill">
+              <CircleDot size={11} /> Systems Lab
+            </p>
             <h1>
               Engineering systems that <span className="blue">scale</span>, <span className="coral">adapt</span>, and
               compound.
@@ -396,13 +373,23 @@ function Portal() {
               <a href="#contact" className="gradient-button">
                 Start Your Project <ArrowRight size={18} />
               </a>
-              <a href="#capabilities" className="ghost-button">Explore Our Labs</a>
+              <a href="#capabilities" className="ghost-button">
+                Explore Our Labs
+              </a>
             </div>
             <div className="trust-points">
-              <span><Users size={16} /> Senior Engineers</span>
-              <span><Activity size={16} /> Predictable Delivery</span>
-              <span><Database size={16} /> AI-Native Products</span>
-              <span><Shield size={16} /> Security by Design</span>
+              <span>
+                <Users size={16} /> Senior Engineers
+              </span>
+              <span>
+                <Activity size={16} /> Predictable Delivery
+              </span>
+              <span>
+                <Database size={16} /> AI-Native Products
+              </span>
+              <span>
+                <Shield size={16} /> Security by Design
+              </span>
             </div>
           </div>
           <SystemBlueprint />
@@ -421,10 +408,12 @@ function Portal() {
               <p className="section-kicker">Capabilities</p>
               <h2>End-to-end engineering for modern products</h2>
               <p>From strategy and architecture to AI, integrations, and operations, our pods own the outcome.</p>
-              <a href="#services" className="inline-link">View all services <ArrowRight size={14} /></a>
+              <a href="#services" className="inline-link">
+                View all services <ArrowRight size={14} />
+              </a>
             </div>
             <div className="capability-grid">
-              {capabilities.map(({ icon: Icon, title, copy }) => (
+              {capabilities.map(([title, copy, Icon]) => (
                 <article className="capability-card" key={title}>
                   <Icon size={34} strokeWidth={1.8} />
                   <h3>{title}</h3>
@@ -441,7 +430,7 @@ function Portal() {
           <ContactPanel />
 
           <section className="proof-strip" id="process">
-            {proof.map(({ icon: Icon, title, copy }) => (
+            {proof.map(([title, copy, Icon]) => (
               <article key={title}>
                 <Icon size={34} />
                 <span>
