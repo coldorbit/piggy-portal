@@ -1,454 +1,705 @@
 import React, { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
-  Activity,
-  AlertTriangle,
   ArrowRight,
-  BarChart3,
+  BriefcaseBusiness,
   Bot,
-  BrainCircuit,
   CheckCircle2,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  CircleDot,
-  Cloud,
+  CloudCog,
   Code2,
-  Cpu,
-  Database,
-  GitBranch,
+  DatabaseZap,
+  FileCheck2,
+  Gauge,
   Headphones,
-  Laptop,
-  Lock,
-  Moon,
-  Package,
-  Server,
-  Shield,
-  Smartphone,
+  Layers3,
+  Mail,
+  MapPin,
+  Menu,
+  MousePointer2,
+  Play,
+  ShieldCheck,
   Sparkles,
-  Target,
-  Users,
+  UsersRound,
+  WandSparkles,
   X,
 } from 'lucide-react';
 import './styles.css';
 
-const capabilities = [
-  ['Product Engineering', 'Web apps, portals, APIs, and internal tools.', Code2],
-  ['AI & Automation', 'RAG, agents, copilots, and workflow automation.', BrainCircuit],
-  ['Data & Integrations', 'Data modeling, pipelines, and system integrations.', Database],
-  ['Cloud & DevOps', 'Infra, CI/CD, observability, and cost optimization.', Cloud],
-  ['Quality & Security', 'Automated testing, SAST, and compliance.', Shield],
-  ['Scale & Support', 'Launch support and continuous improvement.', Headphones],
-];
+const markSrc = '/assets/logo_without_bg.png';
 
-const proof = [
-  ['Collaborative by design', 'Transparent communication, shared docs, and weekly demos.', Users],
-  ['Outcomes over output', 'We align on outcomes, not just features and tickets.', Target],
-  ['Built for scale', 'Architecture that grows with your users and your data.', BarChart3],
-  ['Long-term partner', 'We support, iterate, and ship the next version with you.', Sparkles],
-];
-
-const caseStudies = [
+const services = [
   {
-    eyebrow: 'OPERATIONS PORTAL',
-    title: 'Field Operations Platform',
-    copy: 'Unified intake, work orders, AI document review, and CRM sync.',
-    stats: ['6 weeks', '42%', '3 systems'],
+    id: 'agent-networks',
+    label: 'Agent networks',
+    title: 'Private AI agent networks for engineering teams.',
+    copy: 'We design code review, test generation, bug triage, documentation, and release agents that work inside your tools with permissions, logs, and human approval.',
+    icon: Bot,
+    bullets: ['Codebase-aware agents', 'Human approval gates', 'Audit-ready activity logs'],
+    accent: '#0ebbb7',
   },
   {
-    eyebrow: 'AI SUPPORT OPS',
-    title: 'Knowledge Copilot',
-    copy: 'Private RAG workspace for support teams with citations and audit trails.',
-    stats: ['4 weeks', '31%', '8 sources'],
+    id: 'software-factory',
+    label: 'Software factory',
+    title: 'Human-led AI delivery for real software releases.',
+    copy: 'Our engineers use agentic workflows to ship portals, internal tools, migrations, integrations, and automations faster while keeping architecture and product judgment human-owned.',
+    icon: Layers3,
+    bullets: ['Full-stack product builds', 'Legacy modernization', 'Client-ready delivery rituals'],
+    accent: '#1085f7',
   },
   {
-    eyebrow: 'DATA PLATFORM',
-    title: 'Revenue Data Mesh',
-    copy: 'Unified event tracking, warehouse models, and executive KPI scorecards.',
-    stats: ['9 weeks', '99.9%', '14 feeds'],
+    id: 'private-ai',
+    label: 'Private AI ops',
+    title: 'Distributed AI systems that stay close to your data.',
+    copy: 'We deploy model routing, retrieval, sandboxes, evals, and observability across cloud, VPC, and edge environments so sensitive workflows can use AI without losing control.',
+    icon: CloudCog,
+    bullets: ['VPC and edge deployment', 'Secure model routing', 'Evals and reliability dashboards'],
+    accent: '#63d900',
   },
 ];
 
-const pipeline = [
-  ['Code Commit', 'main', GitBranch, 'done'],
-  ['Build', 'Passing', Shield, 'done'],
-  ['Tests', 'All good', AlertTriangle, 'done'],
-  ['Deploy', 'Staging', CircleDot, 'active'],
+const outcomes = [
+  ['30 days', 'to install the first AI engineering system', MousePointer2],
+  ['24/7', 'agents watching tests, docs, bugs, and releases', Gauge],
+  ['Private', 'by design across data, tools, and execution', ShieldCheck],
 ];
 
-function NavDropdown({ label, items }) {
+const process = [
+  ['Map', 'Audit the codebase, team workflow, data boundaries, risks, and the tasks agents should handle first.', FileCheck2],
+  ['Install', 'Deploy the first agents, approval gates, sandbox rules, integrations, and reporting inside your stack.', Code2],
+  ['Operate', 'Tune prompts, evals, logs, permissions, and releases as the agent network becomes part of daily engineering.', Headphones],
+];
+
+const integrations = ['GitHub', 'OpenAI', 'Claude', 'Linear', 'Jira', 'Postgres', 'AWS', 'Slack'];
+
+const careerRoles = [
+  {
+    title: 'AI Agent Engineer, Engineering Systems',
+    team: 'Software Engineering',
+    summary:
+      'Build private coding, review, testing, documentation, and release agents that client engineering teams can trust in production.',
+    impact:
+      'You will turn messy engineering workflows into reliable AI-assisted systems: agents that open useful pull requests, explain risk, generate tests, summarize releases, and ask for approval before touching sensitive paths.',
+    responsibilities: [
+      'Design and implement agent workflows across GitHub, ticketing systems, CI, documentation, and deployment tools.',
+      'Build codebase-aware retrieval, task planning, prompt orchestration, tool calling, and review flows.',
+      'Implement permission models, human approval states, audit logs, evals, rollback paths, and failure handling.',
+      'Create tests and benchmark suites that measure agent quality before clients rely on the system.',
+      'Partner directly with client engineers to move prototypes into production and improve them after launch.',
+    ],
+    qualifications: [
+      '3+ years building production software across backend, developer tooling, infrastructure, or full-stack systems.',
+      'Hands-on experience with LLM APIs, coding agents, RAG, evals, automation workflows, or AI-assisted engineering tools.',
+      'Strong JavaScript, TypeScript, Python, or Go skills and comfort reading unfamiliar codebases.',
+      'Practical judgment around reliability, security, and when humans should stay in the loop.',
+      'Clear written communication, especially when explaining tradeoffs and implementation choices.',
+    ],
+    niceToHave: [
+      'Experience building internal developer platforms, CI/CD tools, static analysis, or code review automation.',
+      'Familiarity with vector databases, embeddings, structured outputs, and model evaluation frameworks.',
+      'Open-source work, technical writing, or examples of AI-assisted engineering workflows you have shipped.',
+    ],
+    location: 'Remote-friendly, US time zones',
+    type: 'Full-time',
+    compensation: '$130k-$190k base + early-stage equity',
+  },
+  {
+    title: 'Distributed AI Infrastructure Engineer',
+    team: 'Software Engineering',
+    summary:
+      'Build the private runtime layer for AI agents across cloud, VPC, sandbox, and edge environments.',
+    impact:
+      'You will make sure agents can safely run code, call tools, access private context, and produce observable work without putting client systems or data at risk.',
+    responsibilities: [
+      'Develop secure execution environments for agents that touch code, data, APIs, CI/CD, and internal systems.',
+      'Build model routing, retrieval services, queues, worker pools, policy controls, and observability dashboards.',
+      'Design deployment patterns for customer VPCs, private cloud, on-prem, and edge-adjacent environments.',
+      'Own secrets handling, network boundaries, rate limits, sandbox isolation, logging, and incident response paths.',
+      'Partner with application engineers to make infrastructure understandable, reusable, and supportable.',
+    ],
+    qualifications: [
+      '4+ years building backend, infrastructure, platform, security, DevOps, or distributed systems.',
+      'Experience with cloud infrastructure, containers, queues, databases, observability, and production operations.',
+      'Comfort with secure software design, secrets handling, identity, network boundaries, and incident response.',
+      'Ability to reason clearly about latency, cost, privacy, reliability, and deployment tradeoffs.',
+      'Interest in distributed AI, local or private model deployment, and agent sandboxes.',
+    ],
+    niceToHave: [
+      'Experience with Kubernetes, Terraform, AWS/GCP/Azure, serverless workers, or service meshes.',
+      'Prior work in regulated environments such as healthcare, finance, government, or enterprise SaaS.',
+      'Familiarity with model gateways, inference providers, GPU scheduling, or private LLM deployment.',
+    ],
+    location: 'Remote-friendly, US time zones',
+    type: 'Full-time',
+    compensation: '$145k-$210k base + early-stage equity',
+  },
+  {
+    title: 'Software Engineer, Agentic Delivery',
+    team: 'Software Engineering',
+    summary:
+      'Ship client portals, internal tools, integrations, and modernization projects with human-led AI workflows.',
+    impact:
+      'You will be part product engineer, part builder, part technical partner: turning client needs into production software while using agents to accelerate implementation, QA, documentation, and migration work.',
+    responsibilities: [
+      'Build full-stack releases across React, APIs, databases, admin workflows, third-party systems, and client portals.',
+      'Translate ambiguous client workflows into clear product surfaces, data models, and implementation plans.',
+      'Use AI agents to accelerate implementation, testing, documentation, migration, and refactoring work.',
+      'Review AI-generated code carefully and improve the underlying workflow when the output is weak.',
+      'Own quality from architecture through client demo, launch, production support, and follow-up iteration.',
+    ],
+    qualifications: [
+      '3+ years building production web applications with modern frontend and backend frameworks.',
+      'Strong JavaScript or TypeScript skills and comfort with API design, databases, auth, and integrations.',
+      'Good product judgment and the ability to simplify complex operational workflows.',
+      'Comfort reviewing AI-generated work with discipline and improving the process behind it.',
+      'Clear communication, pragmatic debugging, and steady delivery habits.',
+    ],
+    niceToHave: [
+      'Experience with React, Node, Python, Postgres, Stripe, HubSpot, Salesforce, Slack, or workflow tools.',
+      'Experience modernizing legacy codebases or migrating systems with active users.',
+      'Comfort presenting demos and technical tradeoffs directly to client stakeholders.',
+    ],
+    location: 'Remote-friendly, US time zones',
+    type: 'Full-time',
+    compensation: '$120k-$175k base + early-stage equity',
+  },
+  {
+    title: 'AI Operations Support Specialist, United States',
+    team: 'AI Operations',
+    summary:
+      'Monitor client agent networks, coordinate triage, and keep distributed delivery moving across US time zones.',
+    impact:
+      'You will be the operational heartbeat for client work: watching agent activity, catching issues early, keeping notes clean, and making sure the right engineer sees the right problem at the right time.',
+    responsibilities: [
+      'Watch agent runs, client requests, support queues, release notes, and dashboards for issues that need attention.',
+      'Document workflows, recurring failure patterns, customer context, and escalation paths.',
+      'Coordinate across engineering, recruiting, and delivery teams so client work keeps moving.',
+      'Prepare daily handoff notes, status summaries, incident timelines, and client-ready updates.',
+      'Help maintain knowledge bases, runbooks, support macros, and internal operating checklists.',
+    ],
+    qualifications: [
+      '2+ years in technical support, customer operations, QA, delivery coordination, or software-adjacent support.',
+      'Excellent written communication and careful attention to operational detail.',
+      'Comfort learning AI tools, issue trackers, dashboards, and engineering terminology.',
+      'Ability to stay calm, organized, and specific when several requests are moving at once.',
+      'Availability for consistent overlap with US business hours.',
+    ],
+    niceToHave: [
+      'Experience with GitHub, Linear, Jira, Slack, Notion, support desks, QA tools, or incident workflows.',
+      'Prior startup, agency, technical account management, or customer success experience.',
+      'Interest in AI systems, developer tools, and the way software teams operate.',
+    ],
+    location: 'Distributed across the US',
+    type: 'Full-time or contract',
+    compensation: '$65k-$95k base or equivalent contract rate',
+  },
+  {
+    title: 'Technical Recruiter, AI Engineering',
+    team: 'Recruiting',
+    summary:
+      'Help us find engineers and operators who can build serious AI systems without losing software discipline.',
+    impact:
+      'You will build the top of our talent engine: finding practical AI builders, evaluating signal with hiring managers, and giving candidates a respectful, fast, high-context process.',
+    responsibilities: [
+      'Source and screen candidates for agent engineering, distributed infrastructure, delivery, and AI operations roles.',
+      'Build thoughtful candidate pipelines with clear notes and timely follow-up.',
+      'Partner with hiring managers to calibrate technical depth, AI judgment, and ownership signals.',
+      'Write and maintain role briefs, outreach sequences, interview rubrics, and candidate summaries.',
+      'Track recruiting metrics and help improve sourcing channels, close rates, and candidate experience.',
+    ],
+    qualifications: [
+      '3+ years recruiting for software engineering, infrastructure, AI, data, or technical product roles.',
+      'Strong sourcing instincts and candidate communication skills.',
+      'Comfort working with a small team where process is clear but lightweight.',
+      'Ability to evaluate technical signal in partnership with engineers without over-indexing on keywords.',
+      'Organized pipeline hygiene and strong follow-through across many moving conversations.',
+    ],
+    niceToHave: [
+      'Experience recruiting for startups, consultancies, developer tools, infrastructure, or AI-native companies.',
+      'Familiarity with GitHub sourcing, technical communities, founder-led hiring, or contract-to-hire roles.',
+      'Interest in building recruiting operations from an early stage.',
+    ],
+    location: 'Remote-friendly, US time zones',
+    type: 'Full-time or contract',
+    compensation: '$85k-$130k base + performance upside',
+  },
+  {
+    title: 'Recruiting Coordinator, Distributed Team',
+    team: 'Recruiting',
+    summary:
+      'Keep candidate communication, scheduling, postings, and recruiting operations organized as hiring grows.',
+    impact:
+      'You will make the hiring process feel calm and professional for candidates and internal teams: clean schedules, clear follow-ups, accurate postings, and no dropped details.',
+    responsibilities: [
+      'Coordinate interview schedules, candidate updates, and internal recruiting notes.',
+      'Maintain job postings, pipeline status, role briefs, and follow-up reminders.',
+      'Help create a responsive, respectful candidate experience.',
+      'Prepare interview packets, scorecard reminders, debrief notes, and candidate handoff summaries.',
+      'Keep recruiting docs, templates, trackers, and reporting tidy as the team scales.',
+    ],
+    qualifications: [
+      '1+ year in recruiting coordination, people operations, executive assistance, administrative support, or operations.',
+      'Very strong organization, follow-through, and written communication.',
+      'Comfort managing multiple details across distributed teams.',
+      'Careful calendar management and the ability to spot conflicts before they become problems.',
+      'A candidate-first mindset and respect for timely communication.',
+    ],
+    niceToHave: [
+      'Experience with applicant tracking systems, scheduling tools, sourcing tools, or structured interview loops.',
+      'Prior work with remote teams, technical hiring, contractors, or early-stage companies.',
+      'Interest in growing into recruiting operations, technical recruiting, or people operations.',
+    ],
+    location: 'Remote-friendly, US time zones',
+    type: 'Full-time or contract',
+    compensation: '$55k-$78k base or equivalent contract rate',
+  },
+];
+
+const hiringBenefits = [
+  'Remote-first team with strong US time-zone overlap',
+  'Health, dental, and vision coverage for full-time employees',
+  'Flexible PTO, paid holidays, and practical sick time',
+  'Home office and AI tooling budget',
+  'Direct client exposure and high ownership from day one',
+];
+
+const hiringProcess = [
+  'Intro call with recruiting',
+  'Role-specific work review or practical exercise',
+  'Team interview focused on collaboration and judgment',
+  'Final conversation about fit, compensation, and start date',
+];
+
+function BrandLockup({ className = '' }) {
+  return (
+    <span className={`brand-lockup ${className}`}>
+      <img className="brand-mark" src={markSrc} alt="" />
+      <span className="brand-title">
+        <span>Co</span> Bounce
+      </span>
+      <span className="brand-slogan">
+        <i /> <b>AI</b> engineering agents <i />
+      </span>
+    </span>
+  );
+}
+
+function Header({ page = 'home' }) {
   const [open, setOpen] = useState(false);
+  const homeHref = page === 'careers' ? '/' : '';
+  const ctaHref = page === 'careers' ? '#open-roles' : '#contact';
+  const ctaLabel = page === 'careers' ? 'View roles' : 'Book a call';
+
+  const nav = (
+    <>
+      <a href={`${homeHref}#services`}>Services</a>
+      <a href={`${homeHref}#process`}>Process</a>
+      <a href={`${homeHref}#proof`}>Principles</a>
+      <a href="/careers">Careers</a>
+      <a href={`${homeHref}#contact`}>Contact</a>
+    </>
+  );
 
   return (
-    <div className="nav-menu" onMouseLeave={() => setOpen(false)}>
-      <button className="nav-link-button" onClick={() => setOpen((value) => !value)} type="button">
-        {label}
-        <ChevronDown size={14} strokeWidth={2.2} />
-      </button>
+    <header className="site-header">
+      <a className="brand" href="/" aria-label="Co Bounce home">
+        <BrandLockup />
+      </a>
+
+      <nav className="desktop-nav" aria-label="Primary navigation">
+        {nav}
+      </nav>
+
+      <div className="header-actions">
+        <a className="header-cta" href={ctaHref}>
+          {ctaLabel} <ArrowRight size={17} />
+        </a>
+        <button className="menu-button" type="button" aria-label="Open menu" onClick={() => setOpen(true)}>
+          <Menu size={22} />
+        </button>
+      </div>
+
       {open ? (
-        <div className="dropdown-panel">
-          {items.map((item) => (
-            <a href={`#${item.toLowerCase().replaceAll(' ', '-')}`} key={item}>
-              {item}
-            </a>
-          ))}
+        <div className="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+          <button type="button" aria-label="Close menu" onClick={() => setOpen(false)}>
+            <X size={22} />
+          </button>
+          <nav onClick={() => setOpen(false)}>{nav}</nav>
+          <a className="mobile-cta" href={ctaHref} onClick={() => setOpen(false)}>
+            {ctaLabel} <ArrowRight size={17} />
+          </a>
         </div>
       ) : null}
-    </div>
+    </header>
   );
 }
 
-function SystemNode({ icon: Icon, title, sub, active }) {
+function HeroSignal() {
   return (
-    <div className={active ? 'system-node active' : 'system-node'}>
-      <span className="node-icon">
-        <Icon size={18} strokeWidth={1.9} />
-      </span>
-      <span>
-        <strong>{title}</strong>
-        <small>{sub}</small>
-      </span>
-    </div>
-  );
-}
-
-function SystemBlueprint() {
-  return (
-    <div className="blueprint-wrap" aria-label="System blueprint preview">
-      <div className="orbit orbit-one" />
-      <div className="orbit orbit-two" />
-      <div className="signal-dot" />
-      <div className="blueprint-card">
-        <div className="panel-title">
-          <span>System Blueprint</span>
-          <b />
-          <em>Live</em>
-        </div>
-        <div className="blueprint-grid">
-          <div className="node-stack">
-            <SystemNode icon={Laptop} title="Web App" sub="Next.js" />
-            <SystemNode icon={Smartphone} title="Mobile App" sub="React Native" />
-            <SystemNode icon={Server} title="Admin Portal" sub="Next.js" />
-            <SystemNode icon={Package} title="Third-party" sub="Integrations" />
-          </div>
-          <div className="connector-lines left-lines" />
-          <div className="gateway">
-            <span>API Gateway</span>
-            <small>Kong</small>
-            <div className="mini-bars" aria-hidden="true">
-              {Array.from({ length: 9 }).map((_, index) => (
-                <i key={index} style={{ height: `${22 + ((index * 17) % 42)}%` }} />
-              ))}
-            </div>
-            <strong>
-              1.2k <em>req/s</em>
-            </strong>
-          </div>
-          <div className="connector-lines right-lines" />
-          <div className="node-stack services">
-            <SystemNode icon={Cpu} title="Auth Service" sub="Node.js" active />
-            <SystemNode icon={Bot} title="User Service" sub="Node.js" active />
-            <SystemNode icon={BrainCircuit} title="AI Service" sub="Python / FastAPI" active />
-            <SystemNode icon={Cpu} title="Data Service" sub="Node.js" active />
-          </div>
-          <div className="connector-lines db-lines" />
-          <div className="node-stack storage">
-            <SystemNode icon={Database} title="PostgreSQL" sub="Primary DB" />
-            <SystemNode icon={Database} title="Redis" sub="Cache" />
-            <SystemNode icon={Cloud} title="S3" sub="File Storage" />
-            <SystemNode icon={BrainCircuit} title="Vector DB" sub="Pinecone" />
-          </div>
-        </div>
+    <div className="signal-panel" aria-label="Co Bounce AI engineering network preview">
+      <div className="signal-topbar">
+        <span />
+        <strong>Agent Network</strong>
+        <em>Live</em>
       </div>
-
-      <div className="deploy-card">
-        <div className="panel-title small">Deploy Pipeline</div>
-        <div className="pipeline-list">
-          {pipeline.map(([label, sub, Icon, state]) => (
-            <button className={`pipeline-step ${state}`} key={label} type="button">
-              <Icon size={16} strokeWidth={2} />
-              <span>
-                <strong>{label}</strong>
-                <small>{sub}</small>
-              </span>
-              {state === 'done' ? <CheckCircle2 size={17} /> : <ArrowRight size={16} />}
-            </button>
+      <div className="signal-main">
+        <div className="signal-score">
+          <Sparkles size={22} />
+          <strong>12</strong>
+          <span>agents online</span>
+        </div>
+        <div className="signal-flow">
+          {['Repo scan', 'Test agent', 'Review gate', 'Release note'].map((item, index) => (
+            <div className="flow-step" key={item}>
+              <span>{index + 1}</span>
+              <strong>{item}</strong>
+              <small>{index === 2 ? 'Needs approval' : 'Synced'}</small>
+            </div>
           ))}
         </div>
-        <div className="next-row">
-          <span>Next: Production</span>
-          <Lock size={14} />
+      </div>
+      <div className="signal-grid">
+        <div>
+          <DatabaseZap size={19} />
+          <strong>9 systems</strong>
+          <span>connected</span>
         </div>
-      </div>
-
-      <div className="requests-card data-card">
-        <div className="panel-title small">Pull Requests</div>
-        {['feat: AI document parser', 'fix: billing edge case', 'chore: upgrade deps'].map((item, index) => (
-          <div className="request-row" key={item}>
-            <span className="avatar">{['A', 'B', 'C'][index]}</span>
-            <strong>{item}</strong>
-            <small>#{128 - index}</small>
-            <em>{index === 2 ? 'develop' : 'main'}</em>
-          </div>
-        ))}
-      </div>
-
-      <div className="health-card data-card">
-        <div className="panel-title small">System Health</div>
-        {[
-          ['Uptime', '99.98%', 'spark-one'],
-          ['Latency (p95)', '135ms', 'spark-two'],
-          ['Error Rate', '0.63%', 'spark-three'],
-        ].map(([label, value, line]) => (
-          <div className="health-row" key={label}>
-            <strong>{label}</strong>
-            <span>{value}</span>
-            <i className={line} />
-          </div>
-        ))}
-      </div>
-
-      <div className="activity-card data-card">
-        <div className="panel-title small">Activity Feed</div>
-        {[
-          ['Production deploy', '2m ago', 'v1.9.4'],
-          ['AI Service scaled', '15m ago', 'Auto'],
-          ['DB backup completed', '1h ago', 'OK'],
-        ].map(([label, time, tag]) => (
-          <div className="activity-row" key={label}>
-            <Activity size={14} />
-            <strong>{label}</strong>
-            <span>{time}</span>
-            <em>{tag}</em>
-          </div>
-        ))}
-        <a href="#activity">
-          View all activity <ArrowRight size={13} />
-        </a>
+        <div>
+          <UsersRound size={19} />
+          <strong>3 humans</strong>
+          <span>approving</span>
+        </div>
+        <div>
+          <CheckCircle2 size={19} />
+          <strong>126 checks</strong>
+          <span>cleared</span>
+        </div>
       </div>
     </div>
   );
 }
 
-function CaseStudy() {
-  const [active, setActive] = useState(0);
-  const item = caseStudies[active];
+function Services() {
+  const [activeId, setActiveId] = useState(services[0].id);
+  const active = services.find((service) => service.id === activeId) ?? services[0];
+  const Icon = active.icon;
 
   return (
-    <section className="case-section" id="case-work">
-      <div className="case-copy">
-        <p className="section-kicker">Case Studies</p>
-        <h2>Real systems. your project impact.</h2>
-        <a href="#case-work" className="inline-link">
-          View all case work <ArrowRight size={14} />
-        </a>
+    <section className="section services-section" id="services">
+      <div className="section-heading">
+        <span>What we build</span>
+        <h2>Private AI engineering systems for teams that need faster, safer software delivery.</h2>
       </div>
-      <div className="case-controls">
-        <button aria-label="Previous case study" onClick={() => setActive((value) => (value + 2) % 3)} type="button">
-          <ChevronLeft size={20} />
-        </button>
-        <button aria-label="Next case study" onClick={() => setActive((value) => (value + 1) % 3)} type="button">
-          <ChevronRight size={20} />
-        </button>
+
+      <div className="service-tabs" role="tablist" aria-label="Service options">
+        {services.map((service) => {
+          const TabIcon = service.icon;
+          return (
+            <button
+              className={service.id === activeId ? 'active' : ''}
+              key={service.id}
+              type="button"
+              role="tab"
+              aria-selected={service.id === activeId}
+              onClick={() => setActiveId(service.id)}
+            >
+              <TabIcon size={18} />
+              {service.label}
+            </button>
+          );
+        })}
       </div>
-      <article className="case-card">
-        <div className="case-visual">
-          <span>{item.eyebrow}</span>
-          <div className="dashboard-preview" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <i />
-          </div>
+
+      <article className="service-detail" style={{ '--service-accent': active.accent }}>
+        <div className="service-copy">
+          <Icon size={38} />
+          <h3>{active.title}</h3>
+          <p>{active.copy}</p>
         </div>
-        <div className="case-body">
-          <h3>{item.title}</h3>
-          <p>{item.copy}</p>
-          <div className="case-stats">
-            {item.stats.map((stat, index) => (
-              <div key={stat}>
-                <strong>{stat}</strong>
-                <small>{['to MVP', 'less manual work', 'unified'][index]}</small>
-              </div>
-            ))}
-          </div>
+        <div className="service-list">
+          {active.bullets.map((bullet) => (
+            <span key={bullet}>
+              <CheckCircle2 size={18} />
+              {bullet}
+            </span>
+          ))}
         </div>
       </article>
     </section>
   );
 }
 
-function ContactPanel() {
-  const [sent, setSent] = useState(false);
-  const [closed, setClosed] = useState(false);
-
-  if (closed) {
-    return (
-      <button className="contact-pill" onClick={() => setClosed(false)} type="button">
-        Start a conversation <ArrowRight size={16} />
-      </button>
-    );
-  }
+function ContactForm() {
+  const [status, setStatus] = useState('idle');
 
   return (
-    <aside className="contact-panel" id="contact">
-      <button className="close-button" aria-label="Minimize contact form" onClick={() => setClosed(true)} type="button">
-        <X size={18} />
+    <form
+      className="contact-form"
+      onSubmit={(event) => {
+        event.preventDefault();
+        setStatus('sent');
+      }}
+    >
+      <label>
+        Name
+        <input name="name" autoComplete="name" required placeholder="Your name" />
+      </label>
+      <label>
+        Email
+        <input name="email" autoComplete="email" required type="email" placeholder="you@company.com" />
+      </label>
+      <label className="wide">
+        Project brief
+        <textarea name="brief" rows="4" required placeholder="A codebase, engineering workflow, AI agent idea, migration, or operational bottleneck..." />
+      </label>
+      <button type="submit">
+        {status === 'sent' ? 'Brief sent' : 'Send project brief'}
+        {status === 'sent' ? <CheckCircle2 size={18} /> : <ArrowRight size={18} />}
       </button>
-      <p className="section-kicker">Start a conversation</p>
-      <h3>{sent ? 'We got your note.' : 'Tell us about your project'}</h3>
-      {sent ? (
-        <p className="sent-copy">Thanks. We will reply with next-step options and a few useful questions.</p>
-      ) : (
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            setSent(true);
-          }}
-        >
-          <label>
-            Name
-            <input name="name" placeholder="Your name" required />
-          </label>
-          <label>
-            Work email
-            <input name="email" placeholder="you@company.com" required type="email" />
-          </label>
-          <label>
-            What are you building?
-            <textarea name="brief" placeholder="A few details about your goals..." rows={4} required />
-          </label>
-          <button className="gradient-button full" type="submit">
-            Book a Consultation <ArrowRight size={18} />
-          </button>
-        </form>
-      )}
-      <small>We typically respond within a few hours.</small>
-    </aside>
+    </form>
   );
 }
 
 function Portal() {
-  const [dark, setDark] = useState(true);
   const year = useMemo(() => new Date().getFullYear(), []);
 
   return (
-    <div className={dark ? 'app-shell' : 'app-shell light-mode'}>
-      <header className="site-header">
-        <a className="brand" href="#top" aria-label="Co-bounce home">
-          <img src="/logos/co-bounce-logo-dark-transparent.svg" alt="Co-bounce" />
-        </a>
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          <NavDropdown label="Services" items={['Product Engineering', 'AI Automation', 'Cloud DevOps']} />
-          <NavDropdown label="Labs" items={['Systems Lab', 'AI Lab', 'Data Lab']} />
-          <a href="#case-work">Case Work</a>
-          <a href="#process">Process</a>
-          <a href="#about">About</a>
-          <NavDropdown label="Resources" items={['Playbooks', 'Benchmarks', 'Field Notes']} />
-        </nav>
-        <div className="header-actions">
-          <a className="outline-button" href="#contact">
-            Book a Consultation <ArrowRight size={18} />
-          </a>
-          <button className="theme-button" aria-label="Toggle theme" onClick={() => setDark((value) => !value)} type="button">
-            {dark ? <Moon size={19} /> : <Sparkles size={19} />}
-          </button>
-        </div>
-      </header>
+    <div className="app-shell">
+      <Header />
 
       <main id="top">
         <section className="hero-section">
           <div className="hero-copy">
-            <p className="lab-pill">
-              <CircleDot size={11} /> Systems Lab
-            </p>
-            <h1>
-              Engineering systems that <span className="blue">scale</span>, <span className="coral">adapt</span>, and
-              compound.
-            </h1>
-            <p className="hero-subtitle">
-              We design and build software, AI, and data systems that power real operations and shipping products.
+            <span className="eyebrow">
+              <WandSparkles size={15} />
+              Distributed AI engineering firm
+            </span>
+            <h1>Private AI agent networks for software teams.</h1>
+            <p>
+              Co Bounce builds and operates human-controlled AI engineering systems that write, test, review, document,
+              and maintain software inside your existing stack.
             </p>
             <div className="hero-actions">
-              <a href="#contact" className="gradient-button">
-                Start Your Project <ArrowRight size={18} />
+              <a className="primary-button" href="#contact">
+                Book a consultation <ArrowRight size={18} />
               </a>
-              <a href="#capabilities" className="ghost-button">
-                Explore Our Labs
+              <a className="secondary-button" href="#services">
+                <Play size={17} />
+                Explore services
               </a>
-            </div>
-            <div className="trust-points">
-              <span>
-                <Users size={16} /> Senior Engineers
-              </span>
-              <span>
-                <Activity size={16} /> Predictable Delivery
-              </span>
-              <span>
-                <Database size={16} /> AI-Native Products
-              </span>
-              <span>
-                <Shield size={16} /> Security by Design
-              </span>
             </div>
           </div>
-          <SystemBlueprint />
+          <HeroSignal />
         </section>
 
-        <section className="logo-band" aria-label="Trusted by innovative teams">
-          <span>Trusted by innovative teams</span>
-          {['veridian', 'NorthPoint', 'FieldTwin', 'payloom', 'ClearPath', 'momentum'].map((logo) => (
-            <strong key={logo}>{logo}</strong>
-          ))}
-        </section>
-
-        <section className="content-band">
-          <div className="capability-section" id="capabilities">
-            <div className="section-copy">
-              <p className="section-kicker">Capabilities</p>
-              <h2>End-to-end engineering for modern products</h2>
-              <p>From strategy and architecture to AI, integrations, and operations, our pods own the outcome.</p>
-              <a href="#services" className="inline-link">
-                View all services <ArrowRight size={14} />
-              </a>
-            </div>
-            <div className="capability-grid">
-              {capabilities.map(([title, copy, Icon]) => (
-                <article className="capability-card" key={title}>
-                  <Icon size={34} strokeWidth={1.8} />
-                  <h3>{title}</h3>
-                  <p>{copy}</p>
-                  <button aria-label={`Open ${title}`} type="button">
-                    <ArrowRight size={16} />
-                  </button>
-                </article>
-              ))}
-            </div>
+        <section className="logo-ribbon" aria-label="Integration examples">
+          <span>Built inside your engineering stack</span>
+          <div>
+            {integrations.map((integration) => (
+              <strong key={integration}>{integration}</strong>
+            ))}
           </div>
+        </section>
 
-          <CaseStudy />
-          <ContactPanel />
+        <Services />
 
-          <section className="proof-strip" id="process">
-            {proof.map(([title, copy, Icon]) => (
+        <section className="section process-section" id="process">
+          <div className="section-heading narrow">
+            <span>How we move</span>
+            <h2>A focused path from codebase audit to a working AI engineering system.</h2>
+          </div>
+          <div className="process-grid">
+            {process.map(([title, copy, Icon]) => (
               <article key={title}>
-                <Icon size={34} />
-                <span>
-                  <strong>{title}</strong>
-                  <small>{copy}</small>
-                </span>
+                <Icon size={30} />
+                <h3>{title}</h3>
+                <p>{copy}</p>
               </article>
             ))}
-          </section>
+          </div>
+        </section>
+
+        <section className="proof-section" id="proof">
+          <div className="proof-copy">
+            <span>Operating principles</span>
+            <h2>Built so companies can own their intelligence layer instead of renting every workflow forever.</h2>
+          </div>
+          <div className="outcome-grid">
+            {outcomes.map(([value, label, Icon]) => (
+              <article key={label}>
+                <Icon size={26} />
+                <strong>{value}</strong>
+                <span>{label}</span>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="contact-section" id="contact">
+          <div className="contact-copy">
+            <BrandLockup className="contact-brand" />
+            <span>Project intake</span>
+            <h2>Tell us where your engineering workflow is slow. We will map the first agent system.</h2>
+            <p>
+              Share the rough version of your codebase, release process, migration, support load, or automation idea.
+              We will respond with practical next steps and the right questions to answer first.
+            </p>
+            <a href="mailto:hr@co-bounce.com">
+              <Mail size={17} />
+              hr@co-bounce.com
+            </a>
+          </div>
+          <ContactForm />
         </section>
       </main>
 
-      <footer className="footer" id="about">
-        <span>© {year} Co-bounce</span>
-        <a href="#top">Back to top</a>
+      <footer className="site-footer">
+        <span>© {year} Co Bounce</span>
+        <a href="#top">
+          Back to top <ChevronDown size={16} />
+        </a>
       </footer>
     </div>
   );
 }
 
-createRoot(document.getElementById('root')).render(<Portal />);
+function CareersPage() {
+  const year = useMemo(() => new Date().getFullYear(), []);
+
+  return (
+    <div className="app-shell">
+      <Header page="careers" />
+
+      <main id="top">
+        <section className="careers-hero">
+          <div className="careers-copy">
+            <span className="eyebrow">
+              <BriefcaseBusiness size={15} />
+              Careers at co-bounce.com
+            </span>
+            <h1>Build the AI engineering firm we wanted to hire.</h1>
+            <p>
+              Co Bounce is hiring engineers, operators, and recruiters to build private agent networks, ship client
+              software, and operate distributed AI systems under human control.
+            </p>
+            <div className="hero-actions">
+              <a className="primary-button" href="#open-roles">
+                View open roles <ArrowRight size={18} />
+              </a>
+              <a className="secondary-button" href="mailto:careers@co-bounce.com">
+                <Mail size={17} />
+                careers@co-bounce.com
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section className="section careers-section" id="open-roles">
+          <div className="section-heading">
+            <span>Open roles</span>
+            <h2>We are looking for agent engineers, distributed infrastructure builders, AI operations teammates, and recruiters.</h2>
+          </div>
+
+          <div className="careers-overview">
+            <article>
+              <h3>Benefits and working style</h3>
+              <ul>
+                {hiringBenefits.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </article>
+            <article>
+              <h3>Hiring process</h3>
+              <ul>
+                {hiringProcess.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </article>
+          </div>
+
+          <div className="role-grid">
+            {careerRoles.map((role) => (
+              <article className="role-card" key={role.title}>
+                <div className="role-card-header">
+                  <BriefcaseBusiness size={28} />
+                  <span>{role.team}</span>
+                  <h3>{role.title}</h3>
+                </div>
+
+                <div className="role-meta">
+                  <span>
+                    <MapPin size={15} />
+                    {role.location}
+                  </span>
+                  <span>{role.type}</span>
+                  <span>{role.compensation}</span>
+                </div>
+
+                <p className="role-summary">{role.summary}</p>
+
+                <div className="role-overview">
+                  <h4>About the role</h4>
+                  <p>{role.impact}</p>
+                </div>
+
+                <div className="role-detail">
+                  <h4>What you will do</h4>
+                  <ul>
+                    {role.responsibilities.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="role-detail">
+                  <h4>What we are looking for</h4>
+                  <ul>
+                    {role.qualifications.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="role-detail">
+                  <h4>Nice to have</h4>
+                  <ul>
+                    {role.niceToHave.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <a className="role-apply" href={`mailto:careers@co-bounce.com?subject=${encodeURIComponent(role.title)}`}>
+                  Apply for this role <ArrowRight size={15} />
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="careers-band">
+          <div>
+            <span>How to apply</span>
+            <h2>Send a short note, your resume or profile, and one example of work that shows how you think.</h2>
+          </div>
+          <a className="primary-button" href="mailto:careers@co-bounce.com">
+            Apply by email <ArrowRight size={18} />
+          </a>
+        </section>
+      </main>
+
+      <footer className="site-footer">
+        <span>© {year} Co Bounce</span>
+        <a href="/">
+          Home <ArrowRight size={16} />
+        </a>
+      </footer>
+    </div>
+  );
+}
+
+const page = window.location.pathname.replace(/\/$/, '') === '/careers' ? 'careers' : 'home';
+
+createRoot(document.getElementById('root')).render(page === 'careers' ? <CareersPage /> : <Portal />);

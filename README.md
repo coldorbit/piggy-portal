@@ -1,6 +1,6 @@
-# Co-bounce Website
+# Co Bounce Website
 
-A simple React/Vite landing page for a remote software engineering and AI automation firm.
+A React/Vite company portal for a private AI agent network and software engineering firm.
 
 ## Run locally
 
