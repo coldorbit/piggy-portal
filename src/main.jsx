@@ -102,7 +102,6 @@ const careerRoles = [
     ],
     location: 'Remote-friendly, US time zones',
     type: 'Full-time',
-    compensation: '$130k-$190k base + early-stage equity',
   },
   {
     title: 'Distributed AI Infrastructure Engineer',
@@ -132,7 +131,6 @@ const careerRoles = [
     ],
     location: 'Remote-friendly, US time zones',
     type: 'Full-time',
-    compensation: '$145k-$210k base + early-stage equity',
   },
   {
     title: 'Software Engineer, Agentic Delivery',
@@ -162,7 +160,6 @@ const careerRoles = [
     ],
     location: 'Remote-friendly, US time zones',
     type: 'Full-time',
-    compensation: '$120k-$175k base + early-stage equity',
   },
   {
     title: 'AI Operations Support Specialist, United States',
@@ -192,7 +189,6 @@ const careerRoles = [
     ],
     location: 'Distributed across the US',
     type: 'Full-time or contract',
-    compensation: '$65k-$95k base or equivalent contract rate',
   },
   {
     title: 'Technical Recruiter, AI Engineering',
@@ -222,7 +218,6 @@ const careerRoles = [
     ],
     location: 'Remote-friendly, US time zones',
     type: 'Full-time or contract',
-    compensation: '$85k-$130k base + performance upside',
   },
   {
     title: 'Recruiting Coordinator, Distributed Team',
@@ -252,7 +247,6 @@ const careerRoles = [
     ],
     location: 'Remote-friendly, US time zones',
     type: 'Full-time or contract',
-    compensation: '$55k-$78k base or equivalent contract rate',
   },
 ];
 
@@ -268,7 +262,7 @@ const hiringProcess = [
   'Intro call with recruiting',
   'Role-specific work review or practical exercise',
   'Team interview focused on collaboration and judgment',
-  'Final conversation about fit, compensation, and start date',
+  'Final conversation about fit, scope, and start date',
 ];
 
 function BrandLockup({ className = '' }) {
@@ -635,7 +629,6 @@ function CareersPage() {
                     {role.location}
                   </span>
                   <span>{role.type}</span>
-                  <span>{role.compensation}</span>
                 </div>
 
                 <p className="role-summary">{role.summary}</p>
