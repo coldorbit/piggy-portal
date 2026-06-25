@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom';
 import {
   ArrowRight,
   BriefcaseBusiness,
@@ -295,16 +296,16 @@ function Header({ page = 'home' }) {
       <a href={`${homeHref}#services`}>Services</a>
       <a href={`${homeHref}#process`}>Process</a>
       <a href={`${homeHref}#proof`}>Principles</a>
-      <a href="/careers">Careers</a>
+      <Link to="/careers">Careers</Link>
       <a href={`${homeHref}#contact`}>Contact</a>
     </>
   );
 
   return (
     <header className="site-header">
-      <a className="brand" href="/" aria-label="Co Bounce home">
+      <Link className="brand" to="/" aria-label="Co Bounce home">
         <BrandLockup />
-      </a>
+      </Link>
 
       <nav className="desktop-nav" aria-label="Primary navigation">
         {nav}
@@ -692,14 +693,24 @@ function CareersPage() {
 
       <footer className="site-footer">
         <span>© {year} Co Bounce</span>
-        <a href="/">
+        <Link to="/">
           Home <ArrowRight size={16} />
-        </a>
+        </Link>
       </footer>
     </div>
   );
 }
 
-const page = window.location.pathname.replace(/\/$/, '') === '/careers' ? 'careers' : 'home';
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Portal />} />
+        <Route path="/careers" element={<CareersPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
-createRoot(document.getElementById('root')).render(page === 'careers' ? <CareersPage /> : <Portal />);
+createRoot(document.getElementById('root')).render(<App />);
