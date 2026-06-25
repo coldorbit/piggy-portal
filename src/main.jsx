@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom';
 import {
   ArrowRight,
+  BrainCircuit,
   BriefcaseBusiness,
   Bot,
   CheckCircle2,
@@ -11,16 +12,20 @@ import {
   Code2,
   DatabaseZap,
   FileCheck2,
+  GitBranch,
   Gauge,
   Headphones,
   Layers3,
+  ListChecks,
   Mail,
   MapPin,
   Menu,
+  MessageSquare,
   MousePointer2,
   Play,
   ShieldCheck,
   Sparkles,
+  Workflow,
   UsersRound,
   WandSparkles,
   X,
@@ -71,7 +76,16 @@ const process = [
   ['Operate', 'Tune prompts, evals, logs, permissions, and releases as the agent network becomes part of daily engineering.', Headphones],
 ];
 
-const integrations = ['GitHub', 'OpenAI', 'Claude', 'Linear', 'Jira', 'Postgres', 'AWS', 'Slack'];
+const integrations = [
+  ['GitHub', GitBranch],
+  ['OpenAI', BrainCircuit],
+  ['Claude', Sparkles],
+  ['Linear', Workflow],
+  ['Jira', ListChecks],
+  ['Postgres', DatabaseZap],
+  ['AWS', CloudCog],
+  ['Slack', MessageSquare],
+];
 
 const careerRoles = [
   {
@@ -490,8 +504,11 @@ function Portal() {
         <section className="logo-ribbon" aria-label="Integration examples">
           <span>Built inside your engineering stack</span>
           <div>
-            {integrations.map((integration) => (
-              <strong key={integration}>{integration}</strong>
+            {integrations.map(([integration, Icon]) => (
+              <strong key={integration}>
+                <Icon size={16} />
+                {integration}
+              </strong>
             ))}
           </div>
         </section>

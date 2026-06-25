@@ -550,10 +550,18 @@ h1 {
 }
 
 .logo-ribbon strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: #d8e6f5;
   font-size: 14px;
   font-weight: 800;
   white-space: nowrap;
+}
+
+.logo-ribbon strong svg {
+  flex: 0 0 auto;
+  color: var(--teal);
 }
 
 .section {
