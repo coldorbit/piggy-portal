@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom';
+import { FaAws } from 'react-icons/fa';
+import { SiClaude, SiGithub, SiJira, SiLinear, SiOpenai, SiPostgresql, SiSlack } from 'react-icons/si';
 import {
   ArrowRight,
-  BrainCircuit,
   BriefcaseBusiness,
   Bot,
   CheckCircle2,
@@ -12,20 +13,16 @@ import {
   Code2,
   DatabaseZap,
   FileCheck2,
-  GitBranch,
   Gauge,
   Headphones,
   Layers3,
-  ListChecks,
   Mail,
   MapPin,
   Menu,
-  MessageSquare,
   MousePointer2,
   Play,
   ShieldCheck,
   Sparkles,
-  Workflow,
   UsersRound,
   WandSparkles,
   X,
@@ -77,14 +74,14 @@ const process = [
 ];
 
 const integrations = [
-  ['GitHub', GitBranch],
-  ['OpenAI', BrainCircuit],
-  ['Claude', Sparkles],
-  ['Linear', Workflow],
-  ['Jira', ListChecks],
-  ['Postgres', DatabaseZap],
-  ['AWS', CloudCog],
-  ['Slack', MessageSquare],
+  ['GitHub', SiGithub, '#f3f7fb'],
+  ['OpenAI', SiOpenai, '#f3f7fb'],
+  ['Claude', SiClaude, '#d97757'],
+  ['Linear', SiLinear, '#5e6ad2'],
+  ['Jira', SiJira, '#0052cc'],
+  ['Postgres', SiPostgresql, '#4169e1'],
+  ['AWS', FaAws, '#ff9900'],
+  ['Slack', SiSlack, '#e01e5a'],
 ];
 
 const careerRoles = [
@@ -504,9 +501,9 @@ function Portal() {
         <section className="logo-ribbon" aria-label="Integration examples">
           <span>Built inside your engineering stack</span>
           <div>
-            {integrations.map(([integration, Icon]) => (
+            {integrations.map(([integration, Icon, color]) => (
               <strong key={integration}>
-                <Icon size={16} />
+                <Icon aria-hidden="true" size={16} style={{ color }} />
                 {integration}
               </strong>
             ))}
